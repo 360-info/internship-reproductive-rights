@@ -1,0 +1,90 @@
+---
+title: "analysis_Global Fertility Rate"
+author: "karina"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(here)
+library(readr)
+library(ggplot2)
+library(themes360info)
+```
+
+# Number of births
+
+```{r, Number of births,echo=FALSE,warning=FALSE}
+fertility_number <- read_csv(here("data", "fertilityrate_prosperity.csv"))
+fertility_develop <- read_csv(here("data", "fertility_development.csv"))
+
+
+
+```
+
+```{r}
+library(plotly)
+library(quantmod)
+fertility_rate_total <- read_csv(here("data", "fertility_rate_total.csv"))
+fertility_rate_total <-fertility_rate_total %>% pivot_longer(cols=everything(),names_to = "Years", values_to = "Number")
+# fertility_rate_total$Years <- as.numeric()
+# fertility_rate_total <- as.numeric(fertility_rate_total(Years))
+fertility_rate_total$Years <- as.double(fertility_rate_total$Years)  
+
+
+df <- data.frame(Date=index(AAPL),coredata(AAPL)) #把index变成数据内容
+df1 <- tail(df, 30)
+#截取最后三十个
+df1$ID <- seq.int(nrow(df1))
+#在最后一列加上id，按照行数
+
+accumulate_by <- function(dat, var) {
+  var <- lazyeval::f_eval(var, dat)
+  lvls <- plotly:::getLevels(var)
+  dats <- lapply(seq_along(lvls), function(x) {
+    cbind(dat[var %in% lvls[seq(1, x)], ], frame = lvls[[x]])
+  })
+  dplyr::bind_rows(dats)
+}
+
+f_r<-fertility_rate_total %>%
+  accumulate_by(~Years) 
+
+plot_f_r <- ggplot(f_r,aes(x=Years,y= Number,frame=frame)) +
+  geom_line()+
+  theme_360()+
+  ggtitle("World Total Fertility (live births per woman):1955-2020")
+
+plot_f_r
+
+fig <- ggplotly(plot_f_r) %>%
+  # layout(
+  #   title = "World Total Fertility (live births per woman):1955-2020",
+  #   yaxis = list(
+  #     title = "Live births per woman",
+  #     zeroline = F,
+  #     tickprefix = "$"
+  #   ),
+  #   xaxis = list(
+  #     # title = "Year",
+  #     zeroline = F, 
+  #     showgrid = F
+  #   )
+  # ) %>% 
+  animation_opts(
+    frame = 100, 
+    transition = 0, 
+    redraw = FALSE
+  ) %>%
+  animation_slider(
+    currentvalue = list(
+      # prefix = "Year"
+    )
+  )
+
+fig
+```
+
+\
