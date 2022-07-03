@@ -1,0 +1,68 @@
+---
+title: "GDP"
+author: "Karina Zou"
+date: '2022-07-02'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(here)
+library(readr)
+library(ggplot2)
+library(themes360info)
+library(dplyr)
+
+```
+
+```{r}
+fertility_develop <- read_csv(here("data", "fertility_development.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+```
+
+```{r,国家现状}
+line_develop<- ggplot(fertility_develop, aes(x = Years, y = number, color = Region)) +geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Trend for number of birth of each development group
+")
+
+ggplotly(line_develop)
+#数据解释看fertility的数据的最后一页
+```
+
+```{r}
+fertility_income <- read_csv(here("data", "worldbank_incomegroup.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+line_income<- ggplot(fertility_income, aes(x = Years, y = number, color = Region)) +
+  # geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Trend for each continent over time of top 5 key crop yields")
+
+ggplotly(line_income)
+#数据解释看fertility的数据的最后一页
+```
+
+```{r,region}
+fertility_geographic <- read_csv(here("data", "worldbank_geographic.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+line_geo<- ggplot(fertility_geographic, aes(x = Years, y = number, color = Region)) +
+  # geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Trend for each continent over time of top 5 key crop yields")+theme_360()
+
+ggplotly(line_geo)
+
+```
+
+把这几张图放一起
