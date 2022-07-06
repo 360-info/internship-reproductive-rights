@@ -61,8 +61,12 @@ f_r<-fertility_rate_total %>%
 
 plot_f_r <- ggplot(f_r,aes(x=Years,y= Number,frame=frame)) +
   geom_line()+
-  theme_360()+
-  ggtitle("World Total Fertility (live births per woman):1955-2020")
+  labs(title = "World average female births",
+        subtitle = "Plot of length by dose",
+        caption = "Data source: ToothGrowth")+
+  theme_360()
+  
+ 
 
 plot_f_r
 
@@ -92,6 +96,8 @@ fig <- ggplotly(plot_f_r) %>%
   )
 
 fig
+
+
 ```
 
 ```{r}

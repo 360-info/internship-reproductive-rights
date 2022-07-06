@@ -26,22 +26,23 @@ map_all <- left_join(map_world, data, by = c('region' = 'Entity'))
 
 p <- ggplot(map_all, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = number),color = "#272727",size = 0.1) +
-  scale_fill_gradientn(colours = c('#dceded','#81a5d9', '#76b6d6','#b5e6e5','#8ed1dc'),#1,5,4,2,3
+  scale_fill_gradientn(colours = c('#dceded','#3c4d66', '#6384a6','#b5e6e5','#87c3e6'),#1,5,4,2,3
 values = scales::rescale(c(1,2,3,4,5)),
-labels = c("On Request (Gestational Limits Vary)"
+labels = c("On request (Gestational limits vary)"
                                    ,"Prohibited altogether"
                                    ,"To save a woman's life"
-                                   ,"Socioeconomic Grounds"
-                                   ,"To Preserve Health"
+                                   ,"Socioeconomic grounds"
+                                   ,"To preserve health"
                                    ), breaks = c(1,2,3,4,5)) +
   guides(fill = guide_legend(reverse = T))+
   theme(legend.position = "top")+
   guides(fill=guide_legend(nrow=2, byrow=TRUE))+
   theme_360()+
-  labs(fill = 'laws'
-       ,title = 'The World’s Abortion Laws'
-       ,subtitle = 'The definitive record of the legal status of abortion in countries across the globe',
-       caption = " **CHART:** Ying Zou & James Goldie, 360info",
+  labs(fill = 'Laws'
+       ,title = 'Abortion laws around the world'
+       ,subtitle = 'The legal status of abortion based on 2022 records',
+       caption = " **CHART:** Ying Zou & James Goldie, 360info  <br> 
+                  **DATA:** Center for Reproductive Rights",
        x = NULL,
        y = NULL) +
   theme(text = element_text(family = 'Gill Sans', color = 'black'),
@@ -54,8 +55,8 @@ labels = c("On Request (Gestational Limits Vary)"
         plot.background = element_rect(fill = 'white'),
         legend.position = "top",
         legend.background = element_blank(),
-        legend.key = element_blank())+
-  annotate(geom = 'text',label = 'Source: Center for Reproductive Rights (1992-2021)',x = -80, y = -60,size = 3,family = 'Gill Sans',color = 'black',hjust = 'left')
+        legend.key = element_blank())
+  # annotate(geom = 'text',label = 'Source: Center for Reproductive Rights (1992-2021)',x = -80, y = -60,size = 3,family = 'Gill Sans',color = 'black',hjust = 'left')
 
 # p+theme_360()
 save_360plot(p, "man/figures/README-demo.png")
