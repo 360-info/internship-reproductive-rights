@@ -8,6 +8,24 @@ Overall, female fertility is strongly related to the state of economic developme
 
 ![Source: The World Bank](plots/demo1.jpg)
 
+## Data sources
+
+* The data we used listed as follows:
+
+WPP2019_FERT_F01_BIRTHS_BOTH_SEXES.csv
+
+Obtained from UNITED NATIONS,Population Division World Population Prospects 2019.
+
+https://population.un.org/wpp/Download/Standard/Fertility/
+
+This Data set records number of births over a given period(1950-2020). Refers to five-year periods running from 1 July to 30 June of the initial and final years. Data are presented in thousands. The data classify the number of births according to different regions: development groups, World Bank income groups, Geographic regions, Geographic regions. to describe the number of births between 1950 and 2022.
+
+* children-per-woman-UN.csv
+
+Obtained from Our World in Data, Population Division World Population Prospects 2019.
+
+https://ourworldindata.org/search?q=Fertility+Rate
+
 ## Use + Remix rights
 
 ![[Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0)](https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by.png)
