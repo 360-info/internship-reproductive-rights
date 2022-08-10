@@ -6,6 +6,8 @@ In the process of the internship, we chose to use exploratory data analysis to a
 
 Overall, female fertility is strongly related to the state of economic development of the country. At the same time, women’s reproductive rights are not entirely in their own hands, but also subject to the constraints of state policy, while cases of women’s death by sterilization due to the above-mentioned reasons is also a barriers to global reproductive health.
 
+![Source: The World Bank](plots/demo1.jpg)
+
 ## Use + Remix rights
 
 ![[Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0)](https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by.png)
