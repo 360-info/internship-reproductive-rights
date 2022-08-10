@@ -1,6 +1,10 @@
-# 360info report template
+# Pregnancy and choice
 
-What's this report all about? What kind of charts or analysis have we done?
+The purpose of this report is to discover the relationship between women’s reproductive rights and other factors globally. The ultimate goal is to use the information gained to explore current issues and call for greater attention. The data used are related to the economic situation of each country, policies and regulations, abortion methods, etc. After tidying the data, we use data visualization methods to analyze and represent women’s reproductive health issues.
+
+In the process of the internship, we chose to use exploratory data analysis to ask questions about the political and economic impacts of the reproductive health. After data capture, we integrated and analyzed the collected data, especially after data visualization, combining data changes on maps and graphs, the answers to our questions could be more clearly presented.
+
+Overall, female fertility is strongly related to the state of economic development of the country. At the same time, women’s reproductive rights are not entirely in their own hands, but also subject to the constraints of state policy, while cases of women’s death by sterilization due to the above-mentioned reasons is also a barriers to global reproductive health.
 
 ## Use + Remix rights
 
