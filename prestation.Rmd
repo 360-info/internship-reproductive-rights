@@ -1,0 +1,271 @@
+---
+title: "Presentations"
+author: "Karina Zou"
+date: '2022-07-07'
+output: rmdformats::material
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library, include=FALSE}
+library(rmdformats)
+library(tidyverse)
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+library(here)
+library(readr)
+library(themes360info)
+library(dplyr)
+library(tibble)
+library(kableExtra)
+```
+
+
+# Agenda
+
+### Introduction  
+
+* background  
+* Data Sources
+
+### Discussion  
+
+* Overview of the global reproductive health 
+* The Abortion Laws
+* Fertility rate and national economy
+
+### Conclusion  
+
+### Q&A
+
+
+# introduction 
+
+### Background 
+* Over the past several decades, monumental gains have been made in securing women’s right to abortion.
+* Overturning Roe v. Wade shows women’s reproductive health remains heavily politicized and often out of their own hands.
+* Economic factors also affect female fertility at the same time.
+ 
+### Data Sources
+
+Data are from from UNITED NATIONS and Our World in Data.
+
+
+# Discussion
+
+```{r,fig.cap="World average female births",echo=FALSE,message=FALSE,warning=FALSE}
+fertility_rate_total <- read_csv(here("data", "fertility_rate_total.csv"))
+
+fertility_rate_total <-fertility_rate_total %>% pivot_longer(cols=everything(),names_to = "Years", values_to = "Number")
+
+
+ 
+# fertility_rate_total$Years <- as.numeric()
+# fertility_rate_total <- as.numeric(fertility_rate_total(Years))
+fertility_rate_total$Years <- as.double(fertility_rate_total$Years)  
+
+
+# df <- data.frame(Date=index(AAPL),coredata(AAPL)) #把index变成数据内容
+# df1 <- tail(df, 30)
+# #截取最后三十个
+# df1$ID <- seq.int(nrow(df1))
+# #在最后一列加上id，按照行数
+
+accumulate_by <- function(dat, var) {
+  var <- lazyeval::f_eval(var, dat)
+  lvls <- plotly:::getLevels(var)
+  dats <- lapply(seq_along(lvls), function(x) {
+    cbind(dat[var %in% lvls[seq(1, x)], ], frame = lvls[[x]])
+  })
+  dplyr::bind_rows(dats)
+}
+
+f_r<-fertility_rate_total %>%
+  accumulate_by(~Years) 
+
+plot_f_r <- ggplot(f_r,aes(x=Years,y= Number,frame=frame)) +
+  geom_line(color = "#87c3e6")
+  # labs(title = "World average female births",
+  #       subtitle = "Plot of length by dose",
+  #       caption = "Data source: ToothGrowth")+
+  # theme_360()
+
+fig <- ggplotly(plot_f_r) %>%
+  layout(
+    title = "World average female births",
+    yaxis = list(
+      title = "Live births per woman",
+      zeroline = F,
+      tickprefix = "$"
+    ),
+    xaxis = list(
+      title = "",
+      zeroline = F,
+      showgrid = F
+    )
+  ) %>%
+  animation_opts(
+    frame = 100, 
+    transition = 0, 
+    redraw = FALSE
+  ) %>%
+  animation_slider(
+    currentvalue = list(
+      # prefix = "Year"
+    )
+  )
+
+fig
+
+
+```
+* The number of female births in the world is declining. 
+* In 1965, the number of women giving birth peaked in 70 years, with an average of 5 children per woman in her lifetime. The number of women's births declined sharply after 1970, with the decline accelerating between 1975 and 1980. After 1995, the decline became slower, with an average of three children per woman. This decline continues slowly after the millennium. Eventually, in 2020, the average number of children per woman was 2.4. 
+
+```{r,region,fig.cap="Changes in the number of births in different regions",message=FALSE,warning=FALSE,echo=FALSE}
+fertility_geographic <- read_csv(here("data", "worldbank_geographic.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+line_geo<- ggplot(fertility_geographic, aes(x = Years, y = number, color = Region)) +
+  # geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Changes in the number of births in different regions
+")
+
+ggplotly(line_geo)
+```
+  
+* When the data is divided according to different regions, the births in different geographic areas are clear. It can be seen that Asia has the highest number of births, and the number of births has been declining since it peaked in 1990. Africa's birth population is growing over time. Latin America, North America and Oceania has remained stable.
+
+```{r,fig.cap= "Number of birth women give worldwide",message=FALSE,warning=FALSE,echo=FALSE}
+country <-read_csv(here("data", "fertilityrate_prosperity.csv"))
+
+yield_graph = plot_geo(country,
+                      locationmode = 'worldwide',
+                      frame = ~Year) %>% 
+  add_trace(locations = ~Code,
+            z=~Estimates,
+            zmin = 0,
+            zmax = max(country$Estimates),
+            color = ~Estimates)
+yield_graph
+```
+
+* The overall number of births in the world is declining.  
+* The reason for the rapid decline in the number of women giving birth in the world between 1970 and 1980 is the fertility policies of China. Sliding the timeline, we can see that the color change in China is extremely obvious, with the average number of births declining rapidly. Also from the map it can be seen that women in Africa always have more children. 
+
+```{r,fig.cap= "Abortion laws around the world",message=FALSE,warning=FALSE,echo=FALSE}
+map_world <- map_data('world')
+data <- read_csv(here("data","laws(2).csv"))
+
+map_all <- left_join(map_world, data, by = c('region' = 'Entity'))
+
+
+p <- ggplot(map_all, aes( x = long, y = lat, group = group )) +
+  geom_polygon(aes(fill = number),color = "#272727",size = 0.1) +
+  scale_fill_gradientn(colours = c('#dceded','#3c4d66', '#6384a6','#b5e6e5','#87c3e6'),#1,5,4,2,3
+values = scales::rescale(c(1,2,3,4,5)),
+labels = c("On request (Gestational limits vary)"
+                                   ,"Prohibited altogether"
+                                   ,"To save a woman's life"
+                                   ,"Socioeconomic grounds"
+                                   ,"To preserve health"
+                                   ), breaks = c(1,2,3,4,5)) +
+  guides(fill = guide_legend(reverse = T))+
+  theme(legend.position = "top")+
+  guides(fill=guide_legend(nrow=2, byrow=TRUE))+
+  theme_360()+
+  labs(fill = 'Laws'
+       ,title = 'Abortion laws around the world'
+       ,subtitle = 'The legal status of abortion based on 2022 records',
+       caption = " **CHART:** Ying Zou & James Goldie, 360info  <br> 
+                  **DATA:** Center for Reproductive Rights",
+       x = NULL,
+       y = NULL) +
+  theme(text = element_text(family = 'Gill Sans', color = 'black'),
+        plot.title = element_text(size = 28),
+        plot.subtitle = element_text(size = 14),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill = 'white'),
+        plot.background = element_rect(fill = 'white'),
+        legend.position = "top",
+        legend.background = element_blank(),
+        legend.key = element_blank())
+  # annotate(geom = 'text',label = 'Source: Center for Reproductive Rights (1992-2021)',x = -80, y = -60,size = 3,family = 'Gill Sans',color = 'black',hjust = 'left')
+
+# p+theme_360()
+save_360plot(p, "man/figures/README-demo.png")
+knitr::include_graphics("man/figures/README-demo.png")
+```
+
+* Map made into gradient colors according to the strictness of the fertility policies.  
+* 970 million women, representing 59% of women of reproductive age, live in countries that broadly allow abortion. While a majority of women live in countries where they can exercise their right to abortion, 41 percent of women live under restrictive laws.
+
+```{r,fig.cap= "Abortion laws around the world",message=FALSE,warning=FALSE,echo=FALSE}
+fertility_develop <- read_csv(here("data", "fertility_development.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+```
+
+```{r,fig.cap= "Trend for number of birth of each development group",message=FALSE,warning=FALSE,echo=FALSE}
+line_develop<- ggplot(fertility_develop, aes(x = Years, y = number, color = Region)) +geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Trend for number of birth of each development group
+")+
+  theme(legend.position = "top")
+
+ggplotly(line_develop)
+#数据解释看fertility的数据的最后一页
+```
+
+
+
+The difference between less developed countries and less developed countries, including China, in the graph is the number of births in China. It can be seen that the number of births in less developed countries is increasing, while China's policies interfere with the accuracy of the data, resulting in a decreasing trend in the number of births in China. In addition, the trend of less developed regions and less developed regions,excluding least developed country is similar.
+
+
+
+```{r,fig.cap= "Number of births at different income levels over the time",message=FALSE,warning=FALSE,echo=FALSE}
+
+
+fertility_income <- read_csv(here("data", "worldbank_incomegroup.csv")) %>% 
+pivot_longer(-Region,names_to = "Years", values_to = "number")
+line_income<- ggplot(fertility_income, aes(x = Years, y = number, color = Region)) +
+  # geom_point()+
+  geom_line(aes(group = 1))+
+  # facet_wrap(~Region) +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Number of births at different income levels over the time")
+
+ggplotly(line_income)
+#数据解释看fertility的数据的最后一页
+
+
+```
+
+* The graph shows that both high-income countries and countries without income have low numbers of births.   
+* The middle-income countries are the main fertility producers in the world. 
+
+
+
+# limitation & Conclusion
+
+### limitation
+
+Reproductive health issues are not only economic and policy issues, but are also influenced by religion, culture, and other human factors. In addition, abortion is a more private topic, so the data collected may be less than the real data.
+
+### Conclusion
+
+* Women's reproductive health are heavily influenced by factors such as national policies and economic levels.
+
+* the current situation of female fertility in the world is that the number of newborns is showing an overall decreasing trend. However, in some low-income countries in Africa, the number of births is increasing over time. 
+
+
+# Q&A
+

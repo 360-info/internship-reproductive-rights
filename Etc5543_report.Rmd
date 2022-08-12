@@ -28,6 +28,19 @@ library(themes360info)
 library(dplyr)
 library(tibble)
 library(kableExtra)
+library(capsule)
+```
+
+```{r}
+install.packages(
+   "capsule", 
+   repos = c(mm = "https://milesmcbain.r-universe.dev", getOption("repos")))
+
+```
+
+
+```{r}
+capsule::create(c("Etc5543_report.rmd"))
 ```
 
 # Abstract
