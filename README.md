@@ -1,6 +1,30 @@
-# 360info report template
+# Pregnancy and choice
 
-What's this report all about? What kind of charts or analysis have we done?
+The purpose of this report is to discover the relationship between women’s reproductive rights and other factors globally. The ultimate goal is to use the information gained to explore current issues and call for greater attention. The data used are related to the economic situation of each country, policies and regulations, abortion methods, etc. After tidying the data, we use data visualization methods to analyze and represent women’s reproductive health issues.
+
+In the process of the internship, we chose to use exploratory data analysis to ask questions about the political and economic impacts of the reproductive health. After data capture, we integrated and analyzed the collected data, especially after data visualization, combining data changes on maps and graphs, the answers to our questions could be more clearly presented.
+
+Overall, female fertility is strongly related to the state of economic development of the country. At the same time, women’s reproductive rights are not entirely in their own hands, but also subject to the constraints of state policy, while cases of women’s death by sterilization due to the above-mentioned reasons is also a barriers to global reproductive health.
+
+![Source: The World Bank](plots/demo1.jpg)
+
+## Data sources
+
+* The data we used listed as follows:
+
+WPP2019_FERT_F01_BIRTHS_BOTH_SEXES.csv
+
+Obtained from UNITED NATIONS,Population Division World Population Prospects 2019.
+
+https://population.un.org/wpp/Download/Standard/Fertility/
+
+This Data set records number of births over a given period(1950-2020). Refers to five-year periods running from 1 July to 30 June of the initial and final years. Data are presented in thousands. The data classify the number of births according to different regions: development groups, World Bank income groups, Geographic regions, Geographic regions. to describe the number of births between 1950 and 2022.
+
+* children-per-woman-UN.csv
+
+Obtained from Our World in Data, Population Division World Population Prospects 2019.
+
+https://ourworldindata.org/search?q=Fertility+Rate
 
 ## Use + Remix rights
 
